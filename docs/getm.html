@@ -9,9 +9,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="Jens Daniel Müller und Bernd Schneider" />
 
 
-<title>Gastransfer velocity</title>
+<title>GETM</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -19,6 +20,9 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
@@ -262,6 +266,75 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
 
 </head>
 
@@ -269,6 +342,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -314,7 +397,9 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Gastransfer velocity</h1>
+<h1 class="title toc-ignore">GETM</h1>
+<h4 class="author">Jens Daniel Müller und Bernd Schneider</h4>
+<h4 class="date">03 April, 2020</h4>
 
 </div>
 
@@ -342,7 +427,7 @@ $(document).ready(function () {
 <strong>Last updated:</strong> 2020-04-03
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>gastransfer_velocity/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -364,6 +449,66 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
 <div class="panel-body">
 <p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20200403code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20200403)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20200403code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20200403)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
 </div>
 </div>
 </div>
@@ -404,7 +549,7 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <div id="versions" class="tab-pane fade">
 
 <p>
-These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/index.Rmd</code>) and HTML (<code>docs/index.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/getm.Rmd</code>) and HTML (<code>docs/getm.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
 </p>
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
@@ -430,27 +575,10 @@ Message
 <tbody>
 <tr>
 <td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/jens-daniel-mueller/gastransfer_velocity/fa062dc1b6db5e77768659057ce4921a6078703f/docs/index.html" target="_blank">fa062dc</a>
-</td>
-<td>
-jens-daniel-mueller
-</td>
-<td>
-2020-04-03
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
 Rmd
 </td>
 <td>
-<a href="https://github.com/jens-daniel-mueller/gastransfer_velocity/blob/d2a6134e693a086a660a902fdcd118747419ed77/analysis/index.Rmd" target="_blank">d2a6134</a>
+<a href="https://github.com/jens-daniel-mueller/gastransfer_velocity/blob/394561f640c84edd46f443412336b24ad9b822ed/analysis/getm.Rmd" target="_blank">394561f</a>
 </td>
 <td>
 jens-daniel-mueller
@@ -462,74 +590,6 @@ jens-daniel-mueller
 started getm script
 </td>
 </tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/jens-daniel-mueller/gastransfer_velocity/b53bfbf5e532389f5706d6792893cc734d47a5aa/docs/index.html" target="_blank">b53bfbf</a>
-</td>
-<td>
-jens-daniel-mueller
-</td>
-<td>
-2020-04-03
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/jens-daniel-mueller/gastransfer_velocity/cae96aabdc4f4eccf3980a7f9f27b1f34d20e5a1/docs/index.html" target="_blank">cae96aa</a>
-</td>
-<td>
-jens-daniel-mueller
-</td>
-<td>
-2020-04-03
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/jens-daniel-mueller/gastransfer_velocity/blob/66ca161075f175de019d8a9757f99e15c0a9fdec/analysis/index.Rmd" target="_blank">66ca161</a>
-</td>
-<td>
-jens-daniel-mueller
-</td>
-<td>
-2020-04-03
-</td>
-<td>
-Publish the initial files for myproject
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/jens-daniel-mueller/gastransfer_velocity/blob/7be7ea476ed88cb8faf2d024cb51327940c46b99/analysis/index.Rmd" target="_blank">7be7ea4</a>
-</td>
-<td>
-jens-daniel-mueller
-</td>
-<td>
-2020-04-03
-</td>
-<td>
-Start workflowr project.
-</td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -537,9 +597,121 @@ Start workflowr project.
 </div>
 </div>
 </div>
-<p>On this website we present our ongoing ambition to support Dr. Bernd Schneider in his attempt to estimate gas transfer velocities from combined O<sub>2</sub> and CO<sub>2</sub> measurement on VOS Finnmaid.</p>
-<p>Please navigate trough the navbar on top to take a look at the various chapters of this project.</p>
-<p>The links in the upper right corner bring you to the source code of this project and back to Jens’ main homepage. (c) Dr. Jens Daniel Müller, 2020</p>
+<pre class="r"><code>library(tidyverse)
+library(ncdf4)
+library(here)
+library(patchwork)</code></pre>
+<pre class="r"><code># route
+select_route &lt;- &quot;E&quot;
+
+#depth range to subset GETM 3d files
+# d1_shallow &lt;- 0
+# d1_deep &lt;- 25
+
+# date limits
+start_date &lt;- &quot;2018-06-20&quot;
+end_date &lt;- &quot;2018-08-25&quot;</code></pre>
+<pre class="r"><code>nc_2d &lt;- nc_open(here(&quot;data/GETM&quot;, &quot;Finnmaid.E.2d.2018.nc&quot;))
+#print(nc_2d)
+
+lat &lt;- ncvar_get(nc_2d, &quot;latc&quot;)
+
+time_units &lt;- nc_2d$dim$time$units %&gt;%     #we read the time unit from the netcdf file to calibrate the time 
+    substr(start = 15, stop = 33) %&gt;%   #calculation, we take the relevant information from the string
+    ymd_hms()                           # and transform it to the right format
+t &lt;- time_units + ncvar_get(nc_2d, &quot;time&quot;) # read time vector
+rm(time_units)
+
+for (var in names(nc_2d$var)[c(3,4,6:12)]) {
+  
+#var &lt;- &quot;mld_rho&quot;
+
+array &lt;- ncvar_get(nc_2d, var) # store the data in a 3-dimensional array
+fillvalue &lt;- ncatt_get(nc_2d, var, &quot;_FillValue&quot;)
+array[array == fillvalue$value] &lt;- NA
+
+array &lt;- as.data.frame(t(array), xy=TRUE)
+array &lt;- as_tibble(array)
+      
+  gt_2d_part &lt;- array %&gt;%
+  set_names(as.character(lat)) %&gt;%
+  mutate(date_time = t) %&gt;%
+  filter(date_time &gt;= start_date &amp; date_time &lt;= end_date) %&gt;% 
+  gather(&quot;lat&quot;, &quot;value&quot;, 1:length(lat)) %&gt;%
+  mutate(lat = as.numeric(lat)) %&gt;%
+  filter(lat &gt; low_lat, lat&lt;high_lat) %&gt;%
+  select(-lat) %&gt;% 
+  group_by(date_time) %&gt;% 
+  summarise_all(list(value=~mean(.,na.rm=TRUE))) %&gt;%
+  ungroup() %&gt;% 
+  mutate(var = var)
+     
+  if (exists(&quot;gt_2d&quot;)) {
+    gt_2d &lt;- bind_rows(gt_2d, gt_2d_part)
+    } else {gt_2d &lt;- gt_2d_part} 
+
+rm(array, fillvalue, gt_2d_part)
+
+}
+
+nc_close(nc_2d)
+rm(nc_2d)
+
+gt_2d &lt;- gt_2d %&gt;% 
+  mutate(value = round(value, 3)) %&gt;% 
+  pivot_wider(values_from = value, names_from = var) %&gt;% 
+  mutate(U_10 = round(sqrt(u10^2 + v10^2), 3)) %&gt;% 
+  select(-c(u10, v10))
+
+
+gt_2d %&gt;% 
+  vroom_write((here::here(&quot;data/_summarized_data_files&quot;, file = &quot;gt_2d.csv&quot;)))
+
+rm(t, var, gt_2d, lat)</code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 3.5.0 (2018-04-23)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 18363)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_Germany.1252  LC_CTYPE=English_Germany.1252   
+[3] LC_MONETARY=English_Germany.1252 LC_NUMERIC=C                    
+[5] LC_TIME=English_Germany.1252    
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] patchwork_1.0.0 here_0.1        ncdf4_1.17      forcats_0.4.0  
+ [5] stringr_1.4.0   dplyr_0.8.3     purrr_0.3.3     readr_1.3.1    
+ [9] tidyr_1.0.0     tibble_2.1.3    ggplot2_3.3.0   tidyverse_1.3.0
+
+loaded via a namespace (and not attached):
+ [1] tidyselect_0.2.5 xfun_0.10        haven_2.2.0      lattice_0.20-35 
+ [5] colorspace_1.4-1 vctrs_0.2.0      generics_0.0.2   htmltools_0.4.0 
+ [9] yaml_2.2.0       rlang_0.4.5      later_1.0.0      pillar_1.4.2    
+[13] withr_2.1.2      glue_1.3.1       DBI_1.0.0        dbplyr_1.4.2    
+[17] modelr_0.1.5     readxl_1.3.1     lifecycle_0.1.0  munsell_0.5.0   
+[21] gtable_0.3.0     workflowr_1.6.1  cellranger_1.1.0 rvest_0.3.5     
+[25] evaluate_0.14    knitr_1.26       httpuv_1.5.2     broom_0.5.3     
+[29] Rcpp_1.0.2       promises_1.1.0   backports_1.1.5  scales_1.0.0    
+[33] jsonlite_1.6     fs_1.3.1         hms_0.5.2        digest_0.6.22   
+[37] stringi_1.4.3    grid_3.5.0       rprojroot_1.3-2  cli_1.1.0       
+[41] tools_3.5.0      magrittr_1.5     crayon_1.3.4     whisker_0.4     
+[45] pkgconfig_2.0.3  zeallot_0.1.0    xml2_1.2.2       reprex_0.3.0    
+[49] lubridate_1.7.4  rstudioapi_0.10  assertthat_0.2.1 rmarkdown_2.0   
+[53] httr_1.4.1       R6_2.4.0         nlme_3.1-137     git2r_0.26.1    
+[57] compiler_3.5.0  </code></pre>
+</div>
 
 
 <!-- Adjust MathJax settings so that all math formulae are shown using
@@ -555,6 +727,8 @@ footer is added to webpages before the MathJax javascript. -->
 </script>
 
 
+</div>
+</div>
 
 </div>
 
@@ -592,6 +766,32 @@ $(document).ready(function () {
 });
 </script>
 
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
