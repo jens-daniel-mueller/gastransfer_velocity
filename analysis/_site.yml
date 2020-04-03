@@ -4,7 +4,7 @@ navbar:
   title: Gastransfer velocity
   left:
   - text: GETM
-    href: GETM.html
+    href: getm.html
   right:
   - icon: fa-github
     text: Source code
