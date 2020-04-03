@@ -515,16 +515,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjensdanielmuellergastransfervelocitytree0de1e6870a103e0f3152e5252130f6fd5063f2a3targetblank0de1e68a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jens-daniel-mueller/gastransfer_velocity/tree/0de1e6870a103e0f3152e5252130f6fd5063f2a3" target="_blank">0de1e68</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjensdanielmuellergastransfervelocitytreebfe7a5528038a42c9088a81e1fb34a586485ac63targetblankbfe7a55a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jens-daniel-mueller/gastransfer_velocity/tree/bfe7a5528038a42c9088a81e1fb34a586485ac63" target="_blank">bfe7a55</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomjensdanielmuellergastransfervelocitytree0de1e6870a103e0f3152e5252130f6fd5063f2a3targetblank0de1e68a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjensdanielmuellergastransfervelocitytreebfe7a5528038a42c9088a81e1fb34a586485ac63targetblankbfe7a55a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/jens-daniel-mueller/gastransfer_velocity/tree/0de1e6870a103e0f3152e5252130f6fd5063f2a3" target="_blank">0de1e68</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/jens-daniel-mueller/gastransfer_velocity/tree/bfe7a5528038a42c9088a81e1fb34a586485ac63" target="_blank">bfe7a55</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -532,7 +532,6 @@ Note that you need to be careful to ensure that all relevant files for the analy
 <pre><code>
 Ignored files:
     Ignored:    .Rproj.user/
-    Ignored:    analysis/figure/
     Ignored:    data/GETM/
     Ignored:    data/_summarized_data_files/
 
@@ -576,6 +575,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jens-daniel-mueller/gastransfer_velocity/blob/bfe7a5528038a42c9088a81e1fb34a586485ac63/analysis/getm.Rmd" target="_blank">bfe7a55</a>
+</td>
+<td>
+jens-daniel-mueller
+</td>
+<td>
+2020-04-03
+</td>
+<td>
+created hoevmoeller plots
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jens-daniel-mueller/gastransfer_velocity/104482931721e2a6f6f77d917747afa14857cd06/docs/getm.html" target="_blank">1044829</a>
+</td>
+<td>
+jens-daniel-mueller
+</td>
+<td>
+2020-04-03
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -639,7 +672,8 @@ library(ncdf4)
 library(lubridate)
 library(here)
 library(patchwork)
-library(metR)</code></pre>
+library(metR)
+library(scico)</code></pre>
 <pre class="r"><code># route
 select_route &lt;- &quot;E&quot;
 
@@ -720,13 +754,12 @@ rm(t, var, gt_2d, gt_2d_long, gt_2d_wide, lat)</code></pre>
 <pre class="r"><code>gt_2d_wide &lt;- 
   read_csv((here::here(&quot;data/_summarized_data_files&quot;, file = &quot;gt_2d_wide.csv&quot;)))
 
-bin = 2 
-
+bin_SST = 2 
 p_SST &lt;- gt_2d_wide %&gt;% 
   ggplot()+
   geom_contour_fill(aes(x=date_time, y=lat, z=SST),
-                    breaks = MakeBreaks(bin))+
-  scale_fill_viridis_c(breaks = MakeBreaks(bin),
+                    breaks = MakeBreaks(bin_SST))+
+  scale_fill_viridis_c(breaks = MakeBreaks(bin_SST),
                        guide = &quot;colorstrip&quot;,
                        name = &quot;SST (°C)&quot;,
                        option = &quot;magma&quot;)+
@@ -734,26 +767,25 @@ p_SST &lt;- gt_2d_wide %&gt;%
   theme(axis.title.x = element_blank(),
         axis.text.x = element_blank())
 
-bin = 2 
-
+bin_wind = 2 
 p_wind &lt;- gt_2d_wide %&gt;% 
   ggplot()+
   geom_contour_fill(aes(x=date_time, y=lat, z=U_10),
-                    breaks = MakeBreaks(bin))+
-  scale_fill_continuous(breaks = MakeBreaks(bin),
-                       guide = &quot;colorstrip&quot;,
-                       name = &quot;Wind (m/s)&quot;)+
+                    breaks = MakeBreaks(bin_wind))+
+  scale_fill_scico(palette=&quot;davos&quot;,
+                   breaks = MakeBreaks(bin_wind),
+                   guide = &quot;colorstrip&quot;,
+                   name = &quot;Wind (m/s)&quot;)+
   coord_cartesian(expand = 0)+
   theme(axis.title.x = element_blank(),
         axis.text.x = element_blank())
 
-bin = 5 
-
+bin_rho = 5 
 p_rho &lt;- gt_2d_wide %&gt;% 
   ggplot()+
   geom_contour_fill(aes(x=date_time, y=lat, z=mld_rho),
-                    breaks = MakeBreaks(bin))+
-  scale_fill_viridis_c(breaks = MakeBreaks(bin),
+                    breaks = MakeBreaks(bin_rho))+
+  scale_fill_viridis_c(breaks = MakeBreaks(bin_rho),
                        guide = &quot;colorstrip&quot;,
                        name = &quot;mld_rho (m)&quot;)+
   coord_cartesian(expand = 0)+
@@ -761,31 +793,30 @@ p_rho &lt;- gt_2d_wide %&gt;%
         axis.text.x = element_blank())
 
 
-bin = 5 
-
+bin_age1 = 5 
 p_age1 &lt;- gt_2d_wide %&gt;% 
   ggplot()+
   geom_contour_fill(aes(x=date_time, y=lat, z=mld_age_1),
-                    breaks = MakeBreaks(bin))+
-  scale_fill_viridis_c(breaks = MakeBreaks(bin),
-                       guide = &quot;colorstrip&quot;,
-                       name = &quot;mld_age_1 (m)&quot;)+
+                    breaks = MakeBreaks(bin_age1))+
+  scale_fill_scico(breaks = MakeBreaks(bin_age1),
+                   guide = &quot;colorstrip&quot;,
+                   name = &quot;mld_age_1 (m)&quot;,
+                   palette = &quot;tokyo&quot;)+
   coord_cartesian(expand = 0)+
   theme(axis.title.x = element_blank(),
         axis.text.x = element_blank())
 
-bin = 5 
-
+bin_age5 = 5 
 p_age5 &lt;- gt_2d_wide %&gt;% 
   ggplot()+
   geom_contour_fill(aes(x=date_time, y=lat, z=mld_age_5),
-                    breaks = MakeBreaks(bin))+
-  scale_fill_viridis_c(breaks = MakeBreaks(bin),
+                    breaks = MakeBreaks(bin_age5))+
+  scale_fill_viridis_c(breaks = MakeBreaks(bin_age5),
                        guide = &quot;colorstrip&quot;,
-                       name = &quot;mld_age_5 (m)&quot;)+
+                       name = &quot;mld_age_5 (m)&quot;,
+                       direction = -1)+
   coord_cartesian(expand = 0)+
-  theme(axis.title.x = element_blank(),
-        axis.text.x = element_blank())
+  theme(axis.title.x = element_blank())
 
 
 
@@ -822,10 +853,10 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] metR_0.5.0      patchwork_1.0.0 here_0.1        lubridate_1.7.4
- [5] ncdf4_1.17      forcats_0.4.0   stringr_1.4.0   dplyr_0.8.3    
- [9] purrr_0.3.3     readr_1.3.1     tidyr_1.0.0     tibble_2.1.3   
-[13] ggplot2_3.3.0   tidyverse_1.3.0
+ [1] scico_1.1.0     metR_0.5.0      patchwork_1.0.0 here_0.1       
+ [5] lubridate_1.7.4 ncdf4_1.17      forcats_0.4.0   stringr_1.4.0  
+ [9] dplyr_0.8.3     purrr_0.3.3     readr_1.3.1     tidyr_1.0.0    
+[13] tibble_2.1.3    ggplot2_3.3.0   tidyverse_1.3.0
 
 loaded via a namespace (and not attached):
  [1] httr_1.4.1           maps_3.3.0           viridisLite_0.3.0   
