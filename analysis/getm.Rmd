@@ -156,9 +156,10 @@ p_rho <- gt_2d_wide %>%
   ggplot()+
   geom_contour_fill(aes(x=date_time, y=lat, z=mld_rho),
                     breaks = MakeBreaks(bin_rho))+
-  scale_fill_viridis_c(breaks = MakeBreaks(bin_rho),
-                       guide = "colorstrip",
-                       name = "mld_rho (m)")+
+  scale_fill_scico(breaks = MakeBreaks(bin_rho),
+                   guide = "colorstrip",
+                   name = "mld_rho (m)",
+                   direction = -1)+
   coord_cartesian(expand = 0)+
   theme(axis.title.x = element_blank(),
         axis.text.x = element_blank())
@@ -172,7 +173,8 @@ p_age1 <- gt_2d_wide %>%
   scale_fill_scico(breaks = MakeBreaks(bin_age1),
                    guide = "colorstrip",
                    name = "mld_age_1 (m)",
-                   palette = "tokyo")+
+                   palette = "tokyo",
+                   direction = -1)+
   coord_cartesian(expand = 0)+
   theme(axis.title.x = element_blank(),
         axis.text.x = element_blank())
@@ -182,9 +184,10 @@ p_age5 <- gt_2d_wide %>%
   ggplot()+
   geom_contour_fill(aes(x=date_time, y=lat, z=mld_age_5),
                     breaks = MakeBreaks(bin_age5))+
-  scale_fill_viridis_c(breaks = MakeBreaks(bin_age5),
+  scale_fill_scico(breaks = MakeBreaks(bin_age5),
                        guide = "colorstrip",
                        name = "mld_age_5 (m)",
+                       palette = "tokyo",
                        direction = -1)+
   coord_cartesian(expand = 0)+
   theme(axis.title.x = element_blank())
