@@ -1,17 +1,18 @@
-name: "gastransfer_velocity"
+name: gastransfer_velocity
 output_dir: ../docs
 navbar:
-  title: "gastransfer_velocity"
+  title: Gastransfer velocity
   left:
-  - text: Home
-    href: index.html
-  - text: About
-    href: about.html
-  - text: License
-    href: license.html
+  - text: GETM
+    href: GETM.html
+  right:
+  - icon: fa-github
+    text: Source code
+    href: https://github.com/jens-daniel-mueller/gastransfer_velocity
 output:
   workflowr::wflow_html:
     toc: yes
     toc_float: yes
-    theme: cosmo
+    theme: flatly
+    code_folding: hide
     highlight: textmate
