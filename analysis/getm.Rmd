@@ -219,7 +219,7 @@ gt_2d_long <- gt_2d_long %>%
          area = if_else(lat>59    & lat<59.8,  "6.WGF", area),
          area = if_else(lat>59.8  & lat<60,    "7.HGF", area))
 
-gt_2d_reg_long <- gt_2d_long %>% 
+gt_2d_area_long <- gt_2d_long %>% 
   filter(area != "out",
          var != "mld_tke") %>% 
   mutate(date = as.Date(date_time)) %>% 
@@ -228,7 +228,7 @@ gt_2d_reg_long <- gt_2d_long %>%
   summarise_all(list(~mean(.), ~sd(.), ~min(.), ~max(.)), na.rm=TRUE) %>% 
   ungroup()
 
-gt_2d_reg_long %>% 
+gt_2d_area_long %>% 
   ggplot()+
   geom_line(aes(x=date, y=mean, col=area))+
   scale_color_brewer(palette = "Set1")+
@@ -236,11 +236,11 @@ gt_2d_reg_long %>%
   theme(axis.title.x = element_blank())+
   labs(y="Mean")
 
-gt_2d_reg_wide <- gt_2d_reg_long %>% 
+gt_2d_area_wide <- gt_2d_area_long %>% 
   pivot_wider(values_from = c(mean, sd, min, max), names_from = "var")
 
-gt_2d_reg_wide %>% 
-  write_csv((here::here("data/_summarized_data_files", file = "gt_2d_reg_wide.csv")))
+gt_2d_area_wide %>% 
+  write_csv((here::here("data/_summarized_data_files", file = "gt_2d_area_wide.csv")))
 
 
 ```
