@@ -1,0 +1,109 @@
+---
+title: "GETM"
+author: "Jens Daniel Müller und Bernd Schneider"
+date:  "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+  workflowr::wflow_html:
+    number_sections: true
+    toc_depth: 3
+    toc_float:
+      collapsed: false
+editor_options:
+  chunk_output_type: console
+---
+
+
+```{r global_options, include = FALSE}
+knitr::opts_chunk$set(warning=FALSE, message=FALSE)
+```
+
+```{r packages}
+library(tidyverse)
+library(ncdf4)
+library(here)
+library(patchwork)
+```
+
+
+```{r ggplot_theme, include = FALSE}
+theme_set(theme_bw())
+```
+
+
+```{r subsetting_criteria}
+
+# route
+select_route <- "E"
+
+#depth range to subset GETM 3d files
+# d1_shallow <- 0
+# d1_deep <- 25
+
+# date limits
+start_date <- "2018-06-20"
+end_date <- "2018-08-25"
+
+```
+
+
+```{r read_gt_2d_mld_wind, eval=FALSE}
+
+nc_2d <- nc_open(here("data/GETM", "Finnmaid.E.2d.2018.nc"))
+#print(nc_2d)
+
+lat <- ncvar_get(nc_2d, "latc")
+
+time_units <- nc_2d$dim$time$units %>%     #we read the time unit from the netcdf file to calibrate the time 
+    substr(start = 15, stop = 33) %>%   #calculation, we take the relevant information from the string
+    ymd_hms()                           # and transform it to the right format
+t <- time_units + ncvar_get(nc_2d, "time") # read time vector
+rm(time_units)
+
+for (var in names(nc_2d$var)[c(3,4,6:12)]) {
+  
+#var <- "mld_rho"
+
+array <- ncvar_get(nc_2d, var) # store the data in a 3-dimensional array
+fillvalue <- ncatt_get(nc_2d, var, "_FillValue")
+array[array == fillvalue$value] <- NA
+
+array <- as.data.frame(t(array), xy=TRUE)
+array <- as_tibble(array)
+      
+  gt_2d_part <- array %>%
+  set_names(as.character(lat)) %>%
+  mutate(date_time = t) %>%
+  filter(date_time >= start_date & date_time <= end_date) %>% 
+  gather("lat", "value", 1:length(lat)) %>%
+  mutate(lat = as.numeric(lat)) %>%
+  filter(lat > low_lat, lat<high_lat) %>%
+  select(-lat) %>% 
+  group_by(date_time) %>% 
+  summarise_all(list(value=~mean(.,na.rm=TRUE))) %>%
+  ungroup() %>% 
+  mutate(var = var)
+     
+  if (exists("gt_2d")) {
+    gt_2d <- bind_rows(gt_2d, gt_2d_part)
+    } else {gt_2d <- gt_2d_part} 
+
+rm(array, fillvalue, gt_2d_part)
+
+}
+
+nc_close(nc_2d)
+rm(nc_2d)
+
+gt_2d <- gt_2d %>% 
+  mutate(value = round(value, 3)) %>% 
+  pivot_wider(values_from = value, names_from = var) %>% 
+  mutate(U_10 = round(sqrt(u10^2 + v10^2), 3)) %>% 
+  select(-c(u10, v10))
+
+
+gt_2d %>% 
+  vroom_write((here::here("data/_summarized_data_files", file = "gt_2d.csv")))
+
+rm(t, var, gt_2d, lat)
+
+```
