@@ -20,8 +20,10 @@ knitr::opts_chunk$set(warning=FALSE, message=FALSE)
 ```{r packages}
 library(tidyverse)
 library(ncdf4)
+library(lubridate)
 library(here)
 library(patchwork)
+library(metR)
 ```
 
 
@@ -40,11 +42,12 @@ select_route <- "E"
 # d1_deep <- 25
 
 # date limits
-start_date <- "2018-06-20"
-end_date <- "2018-08-25"
+start_date <- "2018-04-01"
+end_date <- "2018-05-22"
 
 ```
 
+# Read GETM data
 
 ```{r read_gt_2d_mld_wind, eval=FALSE}
 
@@ -76,11 +79,11 @@ array <- as_tibble(array)
   filter(date_time >= start_date & date_time <= end_date) %>% 
   gather("lat", "value", 1:length(lat)) %>%
   mutate(lat = as.numeric(lat)) %>%
-  filter(lat > low_lat, lat<high_lat) %>%
-  select(-lat) %>% 
-  group_by(date_time) %>% 
-  summarise_all(list(value=~mean(.,na.rm=TRUE))) %>%
-  ungroup() %>% 
+  # filter(lat > low_lat, lat<high_lat) %>%
+  # select(-lat) %>% 
+  # group_by(date_time) %>% 
+  # summarise_all(list(value=~mean(.,na.rm=TRUE))) %>%
+  # ungroup() %>% 
   mutate(var = var)
      
   if (exists("gt_2d")) {
@@ -94,16 +97,119 @@ rm(array, fillvalue, gt_2d_part)
 nc_close(nc_2d)
 rm(nc_2d)
 
-gt_2d <- gt_2d %>% 
+gt_2d_wide <- gt_2d %>% 
   mutate(value = round(value, 3)) %>% 
   pivot_wider(values_from = value, names_from = var) %>% 
   mutate(U_10 = round(sqrt(u10^2 + v10^2), 3)) %>% 
   select(-c(u10, v10))
 
+gt_2d_long <- gt_2d_wide %>% 
+  pivot_longer(3:10, names_to = "var", values_to = "value")
 
-gt_2d %>% 
-  vroom_write((here::here("data/_summarized_data_files", file = "gt_2d.csv")))
+gt_2d_long %>% 
+  write_csv((here::here("data/_summarized_data_files", file = "gt_2d_long.csv")))
 
-rm(t, var, gt_2d, lat)
+gt_2d_wide %>% 
+  write_csv((here::here("data/_summarized_data_files", file = "gt_2d_wide.csv")))
+
+rm(t, var, gt_2d, gt_2d_long, gt_2d_wide, lat)
 
 ```
+
+
+# Hovmoeller plots
+
+```{r gt_hovmoeller_salt_temp_rho_age, fig.asp=2}
+
+gt_2d_wide <- 
+  read_csv((here::here("data/_summarized_data_files", file = "gt_2d_wide.csv")))
+
+bin = 2 
+
+p_SST <- gt_2d_wide %>% 
+  ggplot()+
+  geom_contour_fill(aes(x=date_time, y=lat, z=SST),
+                    breaks = MakeBreaks(bin))+
+  scale_fill_viridis_c(breaks = MakeBreaks(bin),
+                       guide = "colorstrip",
+                       name = "SST (°C)",
+                       option = "magma")+
+  coord_cartesian(expand = 0)+
+  theme(axis.title.x = element_blank(),
+        axis.text.x = element_blank())
+
+bin = 2 
+
+p_wind <- gt_2d_wide %>% 
+  ggplot()+
+  geom_contour_fill(aes(x=date_time, y=lat, z=U_10),
+                    breaks = MakeBreaks(bin))+
+  scale_fill_continuous(breaks = MakeBreaks(bin),
+                       guide = "colorstrip",
+                       name = "Wind (m/s)")+
+  coord_cartesian(expand = 0)+
+  theme(axis.title.x = element_blank(),
+        axis.text.x = element_blank())
+
+bin = 5 
+
+p_rho <- gt_2d_wide %>% 
+  ggplot()+
+  geom_contour_fill(aes(x=date_time, y=lat, z=mld_rho),
+                    breaks = MakeBreaks(bin))+
+  scale_fill_viridis_c(breaks = MakeBreaks(bin),
+                       guide = "colorstrip",
+                       name = "mld_rho (m)")+
+  coord_cartesian(expand = 0)+
+  theme(axis.title.x = element_blank(),
+        axis.text.x = element_blank())
+
+
+bin = 5 
+
+p_age1 <- gt_2d_wide %>% 
+  ggplot()+
+  geom_contour_fill(aes(x=date_time, y=lat, z=mld_age_1),
+                    breaks = MakeBreaks(bin))+
+  scale_fill_viridis_c(breaks = MakeBreaks(bin),
+                       guide = "colorstrip",
+                       name = "mld_age_1 (m)")+
+  coord_cartesian(expand = 0)+
+  theme(axis.title.x = element_blank(),
+        axis.text.x = element_blank())
+
+bin = 5 
+
+p_age5 <- gt_2d_wide %>% 
+  ggplot()+
+  geom_contour_fill(aes(x=date_time, y=lat, z=mld_age_5),
+                    breaks = MakeBreaks(bin))+
+  scale_fill_viridis_c(breaks = MakeBreaks(bin),
+                       guide = "colorstrip",
+                       name = "mld_age_5 (m)")+
+  coord_cartesian(expand = 0)+
+  theme(axis.title.x = element_blank(),
+        axis.text.x = element_blank())
+
+
+
+
+p_SST / p_wind / p_rho / p_age1 / p_age5 
+
+rm( p_SST , p_wind , p_rho , p_age1 , p_age5 )
+
+
+```
+
+
+
+```{r daily_time_series_gt_2d, eval=FALSE}
+
+gt_2d_daily <- gt_2d %>% 
+  mutate(day = yday(date_time)) %>% 
+  group_by(day) %>% 
+  summarise_all(list(~mean(.,na.rm=TRUE))) %>%
+  ungroup() %>% 
+  select(-day)
+```
+
