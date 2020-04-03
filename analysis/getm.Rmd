@@ -231,7 +231,7 @@ gt_2d_reg_long <- gt_2d_long %>%
 gt_2d_reg_long %>% 
   ggplot()+
   geom_line(aes(x=date, y=mean, col=area))+
-  scale_color_viridis_d()+
+  scale_color_brewer(palette = "Set1")+
   facet_grid(var~., scales = "free_y")+
   theme(axis.title.x = element_blank())+
   labs(y="Mean")
