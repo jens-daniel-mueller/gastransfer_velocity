@@ -1,5 +1,5 @@
 ---
-title: "Home"
+title: "Gastransfer velocity"
 site: workflowr::wflow_site
 output:
   workflowr::wflow_html:
@@ -8,4 +8,4 @@ editor_options:
   chunk_output_type: console
 ---
 
-Welcome to my research website.
+Project to support Dr. Bernd Schneider in his attempt to estimate gas transfer velocities from combined O~2~ and CO~2~ measurement on VOS Finnmaid.
