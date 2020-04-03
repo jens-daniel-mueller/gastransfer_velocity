@@ -159,6 +159,7 @@ p_rho <- gt_2d_wide %>%
   scale_fill_scico(breaks = MakeBreaks(bin_rho),
                    guide = "colorstrip",
                    name = "mld_rho (m)",
+                   palette = "tokyo",
                    direction = -1)+
   coord_cartesian(expand = 0)+
   theme(axis.title.x = element_blank(),
@@ -202,15 +203,62 @@ rm( p_SST , p_wind , p_rho , p_age1 , p_age5 )
 
 ```
 
+# Daily regional mean
+
+```{r gt_2d_area_daily_time_series, fig.asp=1.5}
+
+gt_2d_long <- 
+  read_csv((here::here("data/_summarized_data_files", file = "gt_2d_long.csv")))
+
+gt_2d_long <- gt_2d_long %>% 
+  mutate(area = "out",
+         area = if_else(lat>54.15 & lat<54.55, "1.MEB", area),
+         area = if_else(lat>54.8  & lat<55.25, "2.ARK", area),
+         area = if_else(lat>57.5  & lat<58.5,  "4.EGS", area),
+         area = if_else(lat>58.5  & lat<59,    "5.NGS", area),
+         area = if_else(lat>59    & lat<59.8,  "6.WGF", area),
+         area = if_else(lat>59.8  & lat<60,    "7.HGF", area))
+
+gt_2d_reg_long <- gt_2d_long %>% 
+  filter(area != "out",
+         var != "mld_tke") %>% 
+  mutate(date = as.Date(date_time)) %>% 
+  select(-c(date_time, lat)) %>% 
+  group_by(area, date, var) %>% 
+  summarise_all(list(~mean(.), ~sd(.), ~min(.), ~max(.)), na.rm=TRUE) %>% 
+  ungroup()
+
+gt_2d_reg_long %>% 
+  ggplot()+
+  geom_line(aes(x=date, y=mean, col=area))+
+  scale_color_viridis_d()+
+  facet_grid(var~., scales = "free_y")+
+  theme(axis.title.x = element_blank())+
+  labs(y="Mean")
+
+gt_2d_reg_wide <- gt_2d_reg_long %>% 
+  pivot_wider(values_from = c(mean, sd, min, max), names_from = "var")
+
+gt_2d_reg_wide %>% 
+  write_csv((here::here("data/_summarized_data_files", file = "gt_2d_reg_wide.csv")))
 
 
-```{r daily_time_series_gt_2d, eval=FALSE}
+```
 
-gt_2d_daily <- gt_2d %>% 
-  mutate(day = yday(date_time)) %>% 
-  group_by(day) %>% 
-  summarise_all(list(~mean(.,na.rm=TRUE))) %>%
-  ungroup() %>% 
-  select(-day)
+```{r gt_2d_area_daily_time_series_plot, eval=FALSE}
+
+gt_2d_reg_long %>% 
+  ggplot()+
+  geom_ribbon(aes(x=date, ymin=min, ymax=max, fill="min/max"), alpha=0.3)+
+  geom_ribbon(aes(x=date, ymin=mean-sd, ymax=mean+sd, fill="SD"), alpha=0.3)+
+  geom_line(aes(x=date, y=mean, col="mean"))+
+  scale_fill_brewer(palette = "Set1", name="")+
+  scale_color_manual(values = "black", name="")+
+  facet_grid(var~area, scales = "free_y")+
+  theme(axis.title.x = element_blank())+
+  labs(y="value")
+
+ggsave(here("docs/figure/getm.Rmd", "getm_var_area_time_series.pdf"),
+       width = 15, height = 12)
 ```
 
