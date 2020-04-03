@@ -24,6 +24,7 @@ library(lubridate)
 library(here)
 library(patchwork)
 library(metR)
+library(scico)
 ```
 
 
@@ -124,13 +125,12 @@ rm(t, var, gt_2d, gt_2d_long, gt_2d_wide, lat)
 gt_2d_wide <- 
   read_csv((here::here("data/_summarized_data_files", file = "gt_2d_wide.csv")))
 
-bin = 2 
-
+bin_SST = 2 
 p_SST <- gt_2d_wide %>% 
   ggplot()+
   geom_contour_fill(aes(x=date_time, y=lat, z=SST),
-                    breaks = MakeBreaks(bin))+
-  scale_fill_viridis_c(breaks = MakeBreaks(bin),
+                    breaks = MakeBreaks(bin_SST))+
+  scale_fill_viridis_c(breaks = MakeBreaks(bin_SST),
                        guide = "colorstrip",
                        name = "SST (°C)",
                        option = "magma")+
@@ -138,26 +138,25 @@ p_SST <- gt_2d_wide %>%
   theme(axis.title.x = element_blank(),
         axis.text.x = element_blank())
 
-bin = 2 
-
+bin_wind = 2 
 p_wind <- gt_2d_wide %>% 
   ggplot()+
   geom_contour_fill(aes(x=date_time, y=lat, z=U_10),
-                    breaks = MakeBreaks(bin))+
-  scale_fill_continuous(breaks = MakeBreaks(bin),
-                       guide = "colorstrip",
-                       name = "Wind (m/s)")+
+                    breaks = MakeBreaks(bin_wind))+
+  scale_fill_scico(palette="davos",
+                   breaks = MakeBreaks(bin_wind),
+                   guide = "colorstrip",
+                   name = "Wind (m/s)")+
   coord_cartesian(expand = 0)+
   theme(axis.title.x = element_blank(),
         axis.text.x = element_blank())
 
-bin = 5 
-
+bin_rho = 5 
 p_rho <- gt_2d_wide %>% 
   ggplot()+
   geom_contour_fill(aes(x=date_time, y=lat, z=mld_rho),
-                    breaks = MakeBreaks(bin))+
-  scale_fill_viridis_c(breaks = MakeBreaks(bin),
+                    breaks = MakeBreaks(bin_rho))+
+  scale_fill_viridis_c(breaks = MakeBreaks(bin_rho),
                        guide = "colorstrip",
                        name = "mld_rho (m)")+
   coord_cartesian(expand = 0)+
@@ -165,31 +164,30 @@ p_rho <- gt_2d_wide %>%
         axis.text.x = element_blank())
 
 
-bin = 5 
-
+bin_age1 = 5 
 p_age1 <- gt_2d_wide %>% 
   ggplot()+
   geom_contour_fill(aes(x=date_time, y=lat, z=mld_age_1),
-                    breaks = MakeBreaks(bin))+
-  scale_fill_viridis_c(breaks = MakeBreaks(bin),
-                       guide = "colorstrip",
-                       name = "mld_age_1 (m)")+
+                    breaks = MakeBreaks(bin_age1))+
+  scale_fill_scico(breaks = MakeBreaks(bin_age1),
+                   guide = "colorstrip",
+                   name = "mld_age_1 (m)",
+                   palette = "tokyo")+
   coord_cartesian(expand = 0)+
   theme(axis.title.x = element_blank(),
         axis.text.x = element_blank())
 
-bin = 5 
-
+bin_age5 = 5 
 p_age5 <- gt_2d_wide %>% 
   ggplot()+
   geom_contour_fill(aes(x=date_time, y=lat, z=mld_age_5),
-                    breaks = MakeBreaks(bin))+
-  scale_fill_viridis_c(breaks = MakeBreaks(bin),
+                    breaks = MakeBreaks(bin_age5))+
+  scale_fill_viridis_c(breaks = MakeBreaks(bin_age5),
                        guide = "colorstrip",
-                       name = "mld_age_5 (m)")+
+                       name = "mld_age_5 (m)",
+                       direction = -1)+
   coord_cartesian(expand = 0)+
-  theme(axis.title.x = element_blank(),
-        axis.text.x = element_blank())
+  theme(axis.title.x = element_blank())
 
 
 
