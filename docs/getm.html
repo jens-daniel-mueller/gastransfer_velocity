@@ -399,7 +399,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">GETM</h1>
 <h4 class="author">Jens Daniel Müller und Bernd Schneider</h4>
-<h4 class="date">03 April, 2020</h4>
+<h4 class="date">06 April, 2020</h4>
 
 </div>
 
@@ -424,7 +424,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-04-03
+<strong>Last updated:</strong> 2020-04-06
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -515,16 +515,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjensdanielmuellergastransfervelocitytree792ead0c4d0be999526d5608d958f2a429f25094targetblank792ead0a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jens-daniel-mueller/gastransfer_velocity/tree/792ead0c4d0be999526d5608d958f2a429f25094" target="_blank">792ead0</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjensdanielmuellergastransfervelocitytreebb9dbce65b547594ac3f2c180fa5334c3a9a9327targetblankbb9dbcea"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jens-daniel-mueller/gastransfer_velocity/tree/bb9dbce65b547594ac3f2c180fa5334c3a9a9327" target="_blank">bb9dbce</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomjensdanielmuellergastransfervelocitytree792ead0c4d0be999526d5608d958f2a429f25094targetblank792ead0a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjensdanielmuellergastransfervelocitytreebb9dbce65b547594ac3f2c180fa5334c3a9a9327targetblankbb9dbcea" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/jens-daniel-mueller/gastransfer_velocity/tree/792ead0c4d0be999526d5608d958f2a429f25094" target="_blank">792ead0</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/jens-daniel-mueller/gastransfer_velocity/tree/bb9dbce65b547594ac3f2c180fa5334c3a9a9327" target="_blank">bb9dbce</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -573,6 +573,57 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jens-daniel-mueller/gastransfer_velocity/blob/bb9dbce65b547594ac3f2c180fa5334c3a9a9327/analysis/getm.Rmd" target="_blank">bb9dbce</a>
+</td>
+<td>
+jens-daniel-mueller
+</td>
+<td>
+2020-04-06
+</td>
+<td>
+calculated mean date time for daily means from 2d getm file
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jens-daniel-mueller/gastransfer_velocity/blob/c2819d37cb7d97c117b254dc93c61cb0b34245f0/analysis/getm.Rmd" target="_blank">c2819d3</a>
+</td>
+<td>
+jens-daniel-mueller
+</td>
+<td>
+2020-04-03
+</td>
+<td>
+changed variable name
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jens-daniel-mueller/gastransfer_velocity/68d2e8f8875a1adf72ab9d100bb735487df8b8cc/docs/getm.html" target="_blank">68d2e8f</a>
+</td>
+<td>
+jens-daniel-mueller
+</td>
+<td>
+2020-04-03
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -960,28 +1011,30 @@ gt_2d_long &lt;- gt_2d_long %&gt;%
          area = if_else(lat&gt;59    &amp; lat&lt;59.8,  &quot;6.WGF&quot;, area),
          area = if_else(lat&gt;59.8  &amp; lat&lt;60,    &quot;7.HGF&quot;, area))
 
-gt_2d_reg_long &lt;- gt_2d_long %&gt;% 
+gt_2d_area_long &lt;- gt_2d_long %&gt;% 
   filter(area != &quot;out&quot;,
          var != &quot;mld_tke&quot;) %&gt;% 
   mutate(date = as.Date(date_time)) %&gt;% 
-  select(-c(date_time, lat)) %&gt;% 
+  select(-c(lat)) %&gt;% 
   group_by(area, date, var) %&gt;% 
   summarise_all(list(~mean(.), ~sd(.), ~min(.), ~max(.)), na.rm=TRUE) %&gt;% 
-  ungroup()
+  ungroup() %&gt;% 
+  select(-c(date, date_time_sd, date_time_min, date_time_max)) %&gt;% 
+  rename(mean = value_mean, sd = value_sd, min = value_min, max= value_max)
 
-gt_2d_reg_long %&gt;% 
+gt_2d_area_long %&gt;% 
   ggplot()+
-  geom_line(aes(x=date, y=mean, col=area))+
+  geom_line(aes(x=date_time_mean, y=mean, col=area))+
   scale_color_brewer(palette = &quot;Set1&quot;)+
   facet_grid(var~., scales = &quot;free_y&quot;)+
   theme(axis.title.x = element_blank())+
   labs(y=&quot;Mean&quot;)</code></pre>
 <p><img src="figure/getm.Rmd/gt_2d_area_daily_time_series-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>gt_2d_reg_wide &lt;- gt_2d_reg_long %&gt;% 
+<pre class="r"><code>gt_2d_area_wide &lt;- gt_2d_area_long %&gt;% 
   pivot_wider(values_from = c(mean, sd, min, max), names_from = &quot;var&quot;)
 
-gt_2d_reg_wide %&gt;% 
-  write_csv((here::here(&quot;data/_summarized_data_files&quot;, file = &quot;gt_2d_reg_wide.csv&quot;)))</code></pre>
+gt_2d_area_wide %&gt;% 
+  write_csv((here::here(&quot;data/_summarized_data_files&quot;, file = &quot;gt_2d_area_wide.csv&quot;)))</code></pre>
 <pre class="r"><code>gt_2d_reg_long %&gt;% 
   ggplot()+
   geom_ribbon(aes(x=date, ymin=min, ymax=max, fill=&quot;min/max&quot;), alpha=0.3)+
