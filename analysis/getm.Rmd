@@ -223,14 +223,16 @@ gt_2d_area_long <- gt_2d_long %>%
   filter(area != "out",
          var != "mld_tke") %>% 
   mutate(date = as.Date(date_time)) %>% 
-  select(-c(date_time, lat)) %>% 
+  select(-c(lat)) %>% 
   group_by(area, date, var) %>% 
   summarise_all(list(~mean(.), ~sd(.), ~min(.), ~max(.)), na.rm=TRUE) %>% 
-  ungroup()
+  ungroup() %>% 
+  select(-c(date, date_time_sd, date_time_min, date_time_max)) %>% 
+  rename(mean = value_mean, sd = value_sd, min = value_min, max= value_max)
 
 gt_2d_area_long %>% 
   ggplot()+
-  geom_line(aes(x=date, y=mean, col=area))+
+  geom_line(aes(x=date_time_mean, y=mean, col=area))+
   scale_color_brewer(palette = "Set1")+
   facet_grid(var~., scales = "free_y")+
   theme(axis.title.x = element_blank())+
